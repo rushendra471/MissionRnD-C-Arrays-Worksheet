@@ -21,6 +21,30 @@ struct student {
 	int score;
 };
 
+void strcopy2(char *s1, char *s2){
+	int i = -1;
+	while (s1[++i] != '\0')
+		s2[i] = s1[i];
+}
+
 struct student ** topKStudents(struct student *students, int len, int K) {
-	return NULL;
+	if (students == NULL || len <= 0 || K<=0)
+		return NULL;
+	if (K > len)
+		K = len;
+	int i,j,s;
+	struct student **topstudents = (struct student **) malloc(sizeof(struct student *) * K);
+	for (i = 0; i < K; i++)
+		topstudents[i] = (struct student *) malloc(sizeof(struct student) * K);
+	for (i = 0; i < K; i++) 
+		*topstudents[i] = students[i];
+	for (i = K; i < len; i++) {
+		s = 0;
+		for (j = 1; j < K; j++) 
+		if (topstudents[s]->score > topstudents[j]->score)
+				s = j;
+		if (students[i].score > topstudents[s]->score)
+			*topstudents[s] = students[i];
+	}
+	return topstudents;
 }
